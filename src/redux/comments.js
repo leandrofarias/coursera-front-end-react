@@ -8,7 +8,7 @@ export const Comments = (state = initialState, action) => {
             return { ...state, errorMessage: null, comments: action.payload };
 
         case ActionTypes.COMMENTS_FAILED:
-            return { ...state, errorMessage: action.payload};
+            return { ...state, errorMessage: action.payload, comments: [] };
 
         case ActionTypes.ADD_COMMENT:
             var comment = action.payload;
