@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { actions } from 'react-redux-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
-import { fetchDishes, fetchComments, fetchPromos, postComment } from '../redux/ActionCreators';
+import { fetchDishes, fetchComments, fetchPromos, postComment, fetchLeaders, postFeedback } from '../redux/ActionCreators';
 
 import Menu from './MenuComponent';
 import Header from './HeaderComponent';
@@ -28,7 +28,9 @@ const mapDispatchToProps = dispatch => ({
     resetFeedbackForm: () => dispatch(actions.reset('feedback')),
     fetchComments: () => dispatch(fetchComments()),
     fetchPromos: () => dispatch(fetchPromos()),
-    postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment))
+    postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
+    fetchLeaders: () => dispatch(fetchLeaders()),
+    postFeedback: (feedback) => dispatch(postFeedback(feedback))
 });
 
 class Main extends Component {
@@ -36,6 +38,7 @@ class Main extends Component {
         this.props.fetchDishes();
         this.props.fetchComments();
         this.props.fetchPromos();
+        this.props.fetchLeaders();
     }
 
     render() {
@@ -47,7 +50,9 @@ class Main extends Component {
                     promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
                     promoLoading={this.props.promotions.isLoading}
                     promoErrorMessage={this.props.promotions.errorMessage}
-                    leader={this.props.leaders.filter((leader) => leader.featured)[0]}/>
+                    leader={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+                    leadersLoading={this.props.leaders.isLoading}
+                    leadersErrorMessage={this.props.leaders.errorMessage}/>
             );
         };
 
@@ -76,7 +81,7 @@ class Main extends Component {
 
         const ContactPage = () => {
             return (
-                <Contact resetFeedbackForm={this.props.resetFeedbackForm}/>
+                <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback}/>
             );
         };
 
